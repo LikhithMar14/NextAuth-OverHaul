@@ -2,10 +2,10 @@
 
 "use server";
 import * as z from "zod";
-import { signIn } from "@/auth";
+import { auth, signIn } from "@/auth";
 import { LoginSchema } from "@/shcemas";
 import { AuthError } from "next-auth";
-
+import { NextResponse } from "next/server";
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
   const validatedFields = LoginSchema.safeParse(values);
@@ -18,10 +18,14 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
     const response = await signIn("credentials", {
       email,
       password,
-
       redirect:false
+
     });
+
+    console.log(response)
+
     console.log("Awaited Reponse",response)
+
   } catch (error) {
     if (error instanceof AuthError) {
         console.log("Went to Catch Block 1")
@@ -33,12 +37,17 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
           return { error: "Something went wrong!" };
       }
     }
+
+  const session = await auth()
+  console.log(session?.user)
     console.log("Went to Catch Block 2")
     console.log("Error: ",error)
 
     throw error;
   }
+
   console.log("User Logged In")
+
 
   return { success: "Login Successful" };
 };

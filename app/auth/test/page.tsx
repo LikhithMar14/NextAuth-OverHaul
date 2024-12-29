@@ -1,16 +1,12 @@
 
-import { signIn } from "@/auth"
- 
-export default function SignIn() {
+
+import UserAvatar from "@/components/UserAvatar"
+
+const Test = () => {
   return (
-    <form
-      action={async () => {
-        "use server"
-        await signIn("google")
-        await signIn("github")
-      }}
-    >
-      <button type="submit">Signin with Google</button>
-    </form>
+    <div>
+      <UserAvatar/>
+    </div>
   )
-} 
+}
+export default Test 
