@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { LoginSchema } from "@/shcemas";
+import { getSession } from "next-auth/react";
+
 import {
   Form,
   FormControl,
@@ -34,14 +36,23 @@ export const LoginForm = () => {
     },
   });
 
-  const onSubmit = async (values:z.infer<typeof LoginSchema>) =>{
-    startTransisiton(()=> login(values).then((data)=>{
-        setError(data.error)
-        setSuccess(data.success)
-    }))    
-    await signIn("credentials",values)
-    console.log("Login Completed")
-  }
+  const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
+    console.log("Clicked");
+  
+    // Start the login process
+    try {
+      const data = await login(values); 
+      // setError(data.error);
+      // setSuccess(data.success);
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("An unexpected error occurred.");
+    }
+  
+    console.log("Login Completed");
+    const session = await getSession();
+    console.log("Session:", session);
+  };
   return (
     <CardWrapper
       headerLabel="welcome back"

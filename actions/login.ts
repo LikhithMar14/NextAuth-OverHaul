@@ -5,6 +5,7 @@ import * as z from "zod";
 import { auth, signIn } from "@/auth";
 import { LoginSchema } from "@/shcemas";
 import { AuthError } from "next-auth";
+import { redirect } from "next/navigation";
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
   const validatedFields = LoginSchema.safeParse(values);
@@ -18,9 +19,8 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   try {
     const response = await signIn("credentials", {
       email,
-      password,
-      redirect:false
-
+      password, 
+      redirect:false,
     });
 
     console.log(response)
@@ -38,7 +38,6 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
           return { error: "Something went wrong!" };
       }
     }
-
 
     console.log("Went to Catch Block 2")
     console.log("Error: ",error)
