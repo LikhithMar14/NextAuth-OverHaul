@@ -51,7 +51,7 @@ export const LoginForm = () => {
   
     console.log("Login Completed");
     const session = await getSession();
-    console.log("Session:", session);
+    console.log("Session:", session);    /* Logging Null*/
   };
   return (
     <CardWrapper
