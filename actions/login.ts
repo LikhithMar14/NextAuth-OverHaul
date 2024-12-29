@@ -38,14 +38,14 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
       }
     }
 
-  const session = await auth()
-  console.log(session?.user)
+
     console.log("Went to Catch Block 2")
     console.log("Error: ",error)
 
     throw error;
   }
-
+  const session = await auth()
+  console.log(session?.user)
   console.log("User Logged In")
 
 
