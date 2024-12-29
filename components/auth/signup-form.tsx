@@ -29,6 +29,7 @@ export const SignupForm = () => {
     defaultValues: {
       email: "",
       password: "",
+      name:""
     },
   });
 
@@ -41,8 +42,8 @@ export const SignupForm = () => {
   return (
     <CardWrapper
       headerLabel="Signup to Start the amazing Journey"
-      backButtonLabel="Don't have an account?"
-      backButtonHref="/auth/signup"
+      backButtonLabel=""
+      backButtonHref=""
       showSocial={true}
     >
       <Form {...form}>
