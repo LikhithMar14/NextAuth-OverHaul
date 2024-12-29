@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import { CardWrapper } from "./card-wrapper";
 import { useForm } from "react-hook-form";
@@ -19,6 +19,8 @@ import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSucess } from "../form-success";
 import { login } from "@/actions/login";
+import { signIn } from "next-auth/react"
+
 import { useState, useTransition } from "react";
 export const LoginForm = () => {
   const [isPending,startTransisiton] = useTransition()
@@ -32,11 +34,13 @@ export const LoginForm = () => {
     },
   });
 
-  const onSubmit = (values:z.infer<typeof LoginSchema>) =>{
+  const onSubmit = async (values:z.infer<typeof LoginSchema>) =>{
     startTransisiton(()=> login(values).then((data)=>{
         setError(data.error)
         setSuccess(data.success)
     }))    
+    await signIn("credentials",values)
+    console.log("Login Completed")
   }
   return (
     <CardWrapper

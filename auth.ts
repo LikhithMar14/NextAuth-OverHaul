@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth , { CredentialsSignin } from "next-auth";
 import Google from "next-auth/providers/google";
 import GitHub from "next-auth/providers/github";
 import { PrismaAdapter } from "@auth/prisma-adapter";
@@ -15,11 +15,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     GitHub,
     Credentials({
       credentials: {
-        email: {},
-        password: {},
+        email: {label:"Email",type:"email"},
+
+        password: {label: "Password", type: "password"},
       },
+  
       async authorize(credentials) {
         try {
+          console.log("In auth.ts")
+          console.log("Recieved Credentails: ",credentials)
           const validatedFields = LoginSchema.safeParse(credentials);
           if (validatedFields.success) {
             const { email, password } = validatedFields.data;
@@ -29,8 +33,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
             const passwordMatch = await bcrypt.compare(password, user.password);
             console.log("Consoling the User in the auth.ts File: ", user);
-
-            if (passwordMatch) return user;
+            
+            
+            if (passwordMatch) {
+              console.log("Just before returning user");
+              console.log("password Matched")
+              return user
+            }
           }
           console.log("Returning Null")
           return null;

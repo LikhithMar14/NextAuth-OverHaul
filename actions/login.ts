@@ -5,14 +5,15 @@ import * as z from "zod";
 import { auth, signIn } from "@/auth";
 import { LoginSchema } from "@/shcemas";
 import { AuthError } from "next-auth";
-import { NextResponse } from "next/server";
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
   const validatedFields = LoginSchema.safeParse(values);
   if (!validatedFields.success) {
     return { error: "Invalid fields!" };
   }
+  console.log("Entered Login")
   const { email, password } = validatedFields.data;
+  console.log(email," ",password)
 
   try {
     const response = await signIn("credentials", {
